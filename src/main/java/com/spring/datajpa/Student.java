@@ -60,4 +60,11 @@ public class Student {
             nullable = false
     )
     private int age;
+
+    public Student(String firstName, String lastName, String email, int age) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.age = age;
+    }
 }
