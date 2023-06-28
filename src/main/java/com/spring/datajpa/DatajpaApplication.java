@@ -76,6 +76,25 @@ public class DatajpaApplication {
 					studentRepository.selectAllStudentsWhereFirstnameAndAgeIsGreaterThanOrEqualsNative("Maria", 25);
 
 			nativeQueryStudents.forEach(System.out::println);
+
+			List<Student> jpqlNamedParameterStudents =
+					studentRepository.selectStudentsWithFirstNameAndAgeJPQLUsingNamedParameter("Maria", 25);
+
+			jpqlNamedParameterStudents.forEach(System.out::println);
+
+			List<Student> nativeNamedParameterStudents =
+					studentRepository.selectStudentsWithFirstNameAndAgeNativeUsingNamedParameter("Maria", 25);
+
+			nativeNamedParameterStudents.forEach(System.out::println);
+
+			System.out.println("Deleting student with id 2");
+			int d = studentRepository.deleteStudentById(2L);
+			System.out.println("DELETE : "+ d);
+
+			System.out.println("Deleting student with email mariajones@gmail.com");
+			int deleted =
+					studentRepository.deleteStudentWithEmailNativeSQLWithNamedParameter("mariajones@gmail.com");
+			System.out.println("DELETE : "+ deleted);
 		};
 	}
 
