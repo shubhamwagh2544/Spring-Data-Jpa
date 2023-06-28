@@ -16,6 +16,16 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     Optional<Student> findStudentByEmail(String email);
 
     @Query(
+            value = """
+            select *
+            from student
+            where email = ?1
+            """,
+            nativeQuery = true
+    )
+    Optional<Student> selectStudentByEmailNative(String email);
+
+    @Query(
             """
             select s from Student s
             where s.firstName = ?1 and s.age >= ?2
@@ -23,4 +33,16 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     )
     List<Student> findStudentsByFirstNameEqualsAndAgeGreaterThanEqual(String firstname,
                                                                                Integer age);
+
+    @Query(
+            value =
+            """
+            select *
+            from student
+            where first_name = ?1 and age >= ?2
+            """,
+            nativeQuery = true
+    )
+    List<Student> selectAllStudentsWhereFirstnameAndAgeIsGreaterThanOrEqualsNative(String firstname,
+                                                                      Integer age);
 }

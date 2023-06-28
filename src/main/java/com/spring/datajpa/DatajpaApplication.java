@@ -61,10 +61,21 @@ public class DatajpaApplication {
 							() -> System.out.println("Student with email mariajones@gmail not present")
 					);
 
-			List<Student> queryStudents =
+			studentRepository.selectStudentByEmailNative("mariajones@gmail.com")
+					.ifPresentOrElse(
+							System.out::println,
+							() -> System.out.println("Student with email mariajones@gmail not present")
+					);
+
+			List<Student> jpqlQueryStudents =
 					studentRepository.findStudentsByFirstNameEqualsAndAgeGreaterThanEqual("Maria", 25);
 
-			queryStudents.forEach(System.out::println);
+			jpqlQueryStudents.forEach(System.out::println);
+
+			List<Student> nativeQueryStudents =
+					studentRepository.selectAllStudentsWhereFirstnameAndAgeIsGreaterThanOrEqualsNative("Maria", 25);
+
+			nativeQueryStudents.forEach(System.out::println);
 		};
 	}
 
