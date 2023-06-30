@@ -56,13 +56,15 @@ public class DatajpaApplication {
 			student.addEnrollment(new Enrollment(
 					new EnrollmentId(1L, 1L),
 					student,
-					new Course("Computer Science", "IT")
+					new Course("Computer Science", "IT"),
+					LocalDateTime.now()
 			));
 
 			student.addEnrollment(new Enrollment(
 					new EnrollmentId(1L, 2L),
 					student,
-					new Course("Political Science", "Arts")
+					new Course("Political Science", "Arts"),
+					LocalDateTime.now().minusDays(10)
 			));
 
 			studentRepository.save(student);
