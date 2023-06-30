@@ -6,6 +6,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+
 @SpringBootApplication
 public class DatajpaApplication {
 
@@ -24,17 +28,60 @@ public class DatajpaApplication {
 					"123456789",
 					student
 			);
-			studentIdCardRepository.save(studentIdCard);
+
+			student.addBook(
+					new Book(
+							"Spring Security",
+							LocalDateTime.now().minusDays(5)
+					)
+			);
+			student.addBook(
+					new Book(
+							"Spring Boot",
+							LocalDateTime.now().minusDays(5)
+					)
+			);
+			student.addBook(
+					new Book(
+							"Spring Data Jpa",
+							LocalDateTime.now().minusDays(5)
+					)
+			);
+
+			student.setStudentIdCard(studentIdCard);
+			student.enrollToCourse(new Course("Computer Science", "IT"));
+			student.enrollToCourse(new Course("Political Science", "Arts"));
+
+			studentRepository.save(student);
+
+			studentRepository.findById(1L)									//bidirectional
+					.ifPresent(System.out::println);
+			//this won't print books as EAGER type is lazy in one to many and many to one
+
+			//after assigning fetch type as eager
+			studentRepository.findById(1L)									//bidirectional
+					.ifPresent(
+							student1 -> {
+								List<Book> books = student1.getBooks();
+								books.forEach(
+										book -> {
+											System.out.println(book.getBookName());
+										}
+								);
+							}
+					);
+
 
 			studentIdCardRepository.findById(1L)							//bidirectional
 					.ifPresent(System.out::println);
 
-			studentRepository.findById(1L)									//bidirectional
-					.ifPresent(System.out::println);
-
-			studentRepository.deleteById(1L);
 
 		};
+	}
+
+	private static void testStudentToStudentIdCardOneToOne(StudentRepository studentRepository, StudentIdCardRepository studentIdCardRepository, StudentIdCard studentIdCard) {
+		studentIdCardRepository.save(studentIdCard);
+		studentRepository.deleteById(1L);
 	}
 
 	private static void generateRandomStudents(StudentRepository studentRepository) {
