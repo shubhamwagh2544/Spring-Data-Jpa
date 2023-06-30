@@ -49,8 +49,21 @@ public class DatajpaApplication {
 			);
 
 			student.setStudentIdCard(studentIdCard);
-			student.enrollToCourse(new Course("Computer Science", "IT"));
-			student.enrollToCourse(new Course("Political Science", "Arts"));
+
+//			student.enrollToCourse(new Course("Computer Science", "IT"));
+//			student.enrollToCourse(new Course("Political Science", "Arts"));
+
+			student.addEnrollment(new Enrollment(
+					new EnrollmentId(1L, 1L),
+					student,
+					new Course("Computer Science", "IT")
+			));
+
+			student.addEnrollment(new Enrollment(
+					new EnrollmentId(1L, 2L),
+					student,
+					new Course("Political Science", "Arts")
+			));
 
 			studentRepository.save(student);
 
