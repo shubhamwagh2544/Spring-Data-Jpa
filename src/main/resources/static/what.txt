@@ -1,0 +1,40 @@
+The owning side of an association, which is the side used by Hibernate to know if an association exists or has changed,
+is the side where there is no mappedBy attribute.
+
+##
+Why is the notion of a owning side necessary:
+The idea of a owning side of a bidirectional relation comes from the fact that
+in relational databases there are no bidirectional relations like in the case of objects.
+In databases, we only have unidirectional relations - foreign keys.
+
+#
+What is the reason for the name 'owning side'?
+The owning side of the relation tracked by Hibernate is the side of the relation that owns the foreign key in the database.
+
+------------------------------------------
+
+@OneToMany(mappedBy="person")
+private List<IdDocument>  idDocuments;
+
+@ManyToOne
+private Person person;
+
+------------------------------------------
+
+#
+What does it mean mappedBy ?
+This means something like: "modifications on this side of the relation are already Mapped By the other side of the relation IdDocument.person,
+so no need to track it here separately in an extra table"
+
+###
+GOTCHAs
+Using mappedBy, If we only call person.getDocuments().add(document),
+the foreign key in ID_DOCUMENTS will NOT be linked to the new document,
+because this is not the owning /tracked side of the relation!
+
+To link the document to the new person, you need to explicitly call document.setPerson(person),
+because that is the owning side of the relation.
+
+###
+When using mappedBy, it is the responsibility of the developer to know what is the owning side,
+and update the correct side of the relation in order to trigger the persistence of the new relation in the database.
